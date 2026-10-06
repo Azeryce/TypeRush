@@ -33,6 +33,10 @@ button,.select{
 button:hover{transform:translateY(-2px);background:#253252}
 button.active{background:var(--accent)}
 #newGame{margin-left:auto;background:var(--accent2);color:#071b16}
+#homeResult{margin-left:0;background:var(--card2);color:var(--text)}
+.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}.result-actions button{margin:0}
+
+#homeResult:hover{background:#253252}
 .timer-control{display:flex;align-items:center;gap:8px;background:var(--card2);padding:7px 10px 7px 13px;border-radius:12px;font-weight:700}
 .timer-control span{font-size:13px}
 .timer-control select,.timer-control input{border:0;border-radius:8px;background:#0d1527;color:var(--text);padding:8px 9px;outline:none;font-weight:700}
@@ -46,6 +50,22 @@ button.active{background:var(--accent)}
   min-height:190px;padding:24px;background:#0d1527;border-radius:18px;
   font-size:23px;line-height:1.8;letter-spacing:.3px;user-select:none
 }
+/* Phase 3 : combo et effets de gameplay */
+.combo-bar{display:flex;align-items:center;justify-content:center;gap:14px;margin:14px 0 0;min-height:52px}
+.combo-badge{display:none;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(32,217,164,.12));border:1px solid rgba(124,92,255,.35);font-weight:900;letter-spacing:.3px}
+.combo-badge.show{display:inline-flex}
+.combo-badge .combo-number{font-size:25px;color:var(--accent)}
+.combo-badge.hot{box-shadow:0 0 24px rgba(124,92,255,.35);transform:scale(1.04)}
+.combo-badge.fire{background:linear-gradient(135deg,rgba(255,95,31,.18),rgba(255,205,50,.12));border-color:rgba(255,160,50,.5)}
+.combo-badge.fire .combo-number{color:#ffb52e}
+.combo-message{min-height:22px;color:var(--muted);font-weight:700;font-size:13px}
+#game.combo-hit .textbox{box-shadow:0 0 0 2px rgba(32,217,164,.14),0 0 28px rgba(32,217,164,.08)}
+#game.combo-hot .textbox{box-shadow:0 0 0 2px rgba(255,181,46,.18),0 0 34px rgba(255,181,46,.12)}
+#game.combo-break .textbox{animation:comboBreak .22s ease}
+.combo-pop{animation:comboPop .25s ease}
+@keyframes comboPop{50%{transform:scale(1.1)}}
+@keyframes comboBreak{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
+body.no-animations .combo-badge,body.no-animations #game.combo-break .textbox,body.no-animations .combo-pop{animation:none!important;transition:none!important}
 .char.correct{color:var(--accent2)}
 .char.wrong{color:var(--danger);text-decoration:underline}
 .char.current{border-left:2px solid var(--accent);animation:blink .8s infinite}
@@ -59,10 +79,7 @@ button.active{background:var(--accent)}
 #bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.1s}
 .result{display:none;text-align:center;padding:25px 10px}
 .result.show{display:block}
-.result .big{font-size:65px;font-weight:900}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
-.resultBox{background:rgba(255,255,255,.04);padding:16px;border-radius:14px}
-.resultBox b{font-size:24px;display:block}
+.result .big{font-size:65px;font-weight:900;line-height:1}.result .score-label{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-top:8px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}.resultBox{background:rgba(255,255,255,.04);padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.05)}.resultBox b{font-size:24px;display:block;margin-bottom:4px}.resultBox span{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px}.result-score{border-color:rgba(124,92,255,.35);background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(255,255,255,.04))}.result-combo{border-color:rgba(255,181,46,.3);background:linear-gradient(135deg,rgba(255,181,46,.1),rgba(255,255,255,.04))}.result-combo b{color:#ffb52e}.result-score b{color:var(--accent)}
 .help{color:var(--muted);text-align:center;font-size:13px;margin-top:16px}
 @media(max-width:650px){
  .stats,.grid{grid-template-columns:repeat(2,1fr)}
@@ -78,6 +95,43 @@ button.active{background:var(--accent)}
  .history-item{grid-template-columns:1fr}
  .history-actions{flex-direction:column}
 }
+
+
+/* Accueil TypeRush */
+.home-screen{display:none;text-align:center;padding:10px 4px 6px}
+.home-screen.show{display:block}
+.home-hero{padding:12px 8px 8px}
+.home-kicker{color:var(--accent2);font-size:13px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
+.home-title{font-size:clamp(42px,8vw,72px);line-height:1;margin:10px 0 8px;font-weight:950;letter-spacing:-2px}
+.home-subtitle{margin:0 auto;color:var(--muted);max-width:620px;font-size:15px}
+.home-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:620px;margin:28px auto 22px}
+.home-btn{position:relative;min-height:100px;padding:18px 20px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:var(--card);color:var(--text);font:inherit;font-weight:800;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:10px;flex-direction:column;transition:transform 150ms ease,background-color 150ms ease,border-color 150ms ease,box-shadow 150ms ease,opacity 150ms ease}
+.home-btn__icon{font-size:30px;line-height:1}
+.home-btn__text{font-size:16px}
+.home-btn--primary{grid-column:1/-1;min-height:78px;background:var(--accent);color:#fff;border-color:var(--accent);font-size:18px;box-shadow:0 10px 28px rgba(0,0,0,.22)}
+.home-btn--primary .home-btn__icon{font-size:27px}
+@media (hover:hover) and (pointer:fine){
+ .home-btn:not(:disabled):hover{transform:translateY(-2px);background:var(--card2);border-color:var(--accent);box-shadow:0 8px 22px rgba(0,0,0,.18)}
+ .home-btn--primary:not(:disabled):hover{background:var(--accent);filter:brightness(1.08);box-shadow:0 12px 32px rgba(0,0,0,.28)}
+}
+.home-btn:not(:disabled):active{transform:scale(.97);transition-duration:50ms}
+.home-btn:focus{outline:none}
+.home-btn:focus-visible{outline:3px solid var(--accent);outline-offset:4px;box-shadow:0 0 0 6px rgba(124,92,255,.22)}
+.home-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;pointer-events:none}
+.home-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:760px;margin:0 auto}
+.home-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 10px}
+.home-stat .icon{font-size:19px}.home-stat .value{font-size:24px;font-weight:950;margin-top:5px}.home-stat .label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:3px}
+.home-stat-note{color:var(--muted);font-size:11px;margin:14px 0 0}
+body.no-animations .home-btn,body.no-animations .home-btn:hover{transition:none!important;transform:none!important}
+@media(max-width:650px){
+ .home-screen{padding-top:2px}
+ .home-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:22px}
+ .home-btn{min-height:92px;padding:14px 10px}.home-btn__icon{font-size:27px}.home-btn__text{font-size:14px}
+ .home-btn--primary{grid-column:1/-1;min-height:64px;flex-direction:row;font-size:17px}
+ .home-summary{grid-template-columns:repeat(2,1fr);gap:9px}
+ .home-stat{padding:12px 8px}.home-stat .value{font-size:22px}
+}
+@media(max-width:379px){.home-actions{grid-template-columns:1fr}.home-btn--primary{grid-column:auto}.home-btn{min-height:60px;flex-direction:row}.home-btn__icon{font-size:23px}.home-summary{grid-template-columns:1fr 1fr}}
 
 /* Phase 1 : statistiques et historique */
 #statistics{display:none}
@@ -157,17 +211,50 @@ body.theme-inferno{--bg:#180906;--card:#2a110c;--card2:#3a1810;--text:#fff4ed;--
 <body>
 <main class="app">
 <header>
-  <div class="logo">TYPERUSH</div>
-  <h1>Teste ta vitesse</h1>
-  <p class="subtitle">Tape le texte le plus vite et le plus précisément possible.</p>
-  <div class="profile-card">
-    <div id="homeAvatar" class="profile-avatar">😎</div>
+  <div class="profile-card" style="max-width:none;margin:0 0 18px">
+    <div class="logo">⌨️ TYPERUSH</div>
+    <div id="homeAvatar" class="profile-avatar" aria-hidden="true">😎</div>
     <div class="profile-info"><strong id="homePlayerName">TypeRush</strong><span>👤 Profil joueur</span></div>
-    <button id="showProfile" class="profile-edit">✏️ Modifier</button>
+    <button id="showProfile" class="profile-edit" type="button" aria-label="Ouvrir le profil">👤 Profil</button>
   </div>
 </header>
 
-<section class="panel">
+<section id="homeScreen" class="home-screen show" aria-label="Accueil TypeRush">
+  <div class="home-hero">
+    <div class="home-kicker">⌨️ TypeRush</div>
+    <h1 class="home-title">TYPERUSH</h1>
+    <p class="home-subtitle">Améliore ta vitesse de frappe, bats tes records et construis ton meilleur combo.</p>
+  </div>
+
+  <nav class="home-actions" aria-label="Navigation principale">
+    <button type="button" id="homePlay" class="home-btn home-btn--primary" aria-label="Jouer à TypeRush">
+      <span class="home-btn__icon" aria-hidden="true">🎮</span>
+      <span class="home-btn__text">Jouer</span>
+    </button>
+    <button type="button" id="homeStats" class="home-btn" aria-label="Afficher les statistiques">
+      <span class="home-btn__icon" aria-hidden="true">📊</span>
+      <span class="home-btn__text">Statistiques</span>
+    </button>
+    <button type="button" id="homeCustomize" class="home-btn" aria-label="Ouvrir la personnalisation">
+      <span class="home-btn__icon" aria-hidden="true">🎨</span>
+      <span class="home-btn__text">Personnalisation</span>
+    </button>
+    <button type="button" id="homeProfile" class="home-btn" aria-label="Ouvrir le profil">
+      <span class="home-btn__icon" aria-hidden="true">👤</span>
+      <span class="home-btn__text">Profil</span>
+    </button>
+  </nav>
+
+  <section class="home-summary" aria-label="Résumé des performances">
+    <div class="home-stat"><div class="icon" aria-hidden="true">🏆</div><div class="value" id="homeBestWpm">0</div><div class="label">Meilleur WPM</div></div>
+    <div class="home-stat"><div class="icon" aria-hidden="true">🔥</div><div class="value" id="homeBestCombo">0</div><div class="label">Meilleur combo</div></div>
+    <div class="home-stat"><div class="icon" aria-hidden="true">🎯</div><div class="value" id="homeAvgAccuracy">100%</div><div class="label">Précision moyenne</div></div>
+    <div class="home-stat"><div class="icon" aria-hidden="true">🎮</div><div class="value" id="homeGames">0</div><div class="label">Parties jouées</div></div>
+  </section>
+  <p class="home-stat-note">Tes performances sont enregistrées automatiquement dans ce navigateur.</p>
+</section>
+
+<section class="panel" id="workspace" style="display:none">
   <div class="controls">
     <button class="diff active" data-diff="easy">Facile</button>
     <button class="diff" data-diff="medium">Moyen</button>
@@ -257,6 +344,10 @@ body.theme-inferno{--bg:#180906;--card:#2a110c;--card2:#3a1810;--text:#fff4ed;--
   </div>
 
   <div id="game">
+    <div class="combo-bar">
+      <div id="comboBadge" class="combo-badge"><span>🔥 Série</span><span id="comboCount" class="combo-number">0</span></div>
+      <div id="comboMessage" class="combo-message">Commence à taper pour lancer ta série !</div>
+    </div>
     <div id="text" class="textbox"></div>
     <textarea id="input" spellcheck="false" autocomplete="off" autocorrect="off"
       placeholder="Clique ici et commence à taper..."></textarea>
@@ -265,15 +356,21 @@ body.theme-inferno{--bg:#180906;--card:#2a110c;--card2:#3a1810;--text:#fff4ed;--
   </div>
 
   <div id="result" class="result">
-    <div class="big" id="finalWpm">0</div>
-    <div>mots par minute</div>
+    <div class="big" id="finalScore">0</div>
+    <div class="score-label">Score</div>
+    <div style="margin-top:10px"><strong id="finalWpm">0</strong> MPM</div>
     <div class="grid">
-      <div class="resultBox"><b id="finalAccuracy">0%</b>Précision</div>
-      <div class="resultBox"><b id="finalErrors">0</b>Erreurs</div>
-      <div class="resultBox"><b id="finalTime">0 s</b>Temps</div>
+      <div class="resultBox result-score"><b id="finalScoreSmall">0</b><span>Score</span></div>
+      <div class="resultBox result-combo"><b id="finalComboValue">0</b><span>Meilleur combo</span></div>
+      <div class="resultBox"><b id="finalAccuracy">0%</b><span>Précision</span></div>
+      <div class="resultBox"><b id="finalTime">0 s</b><span>Temps</span></div>
     </div>
+    <p id="finalErrors" class="combo-message"></p>
     <p id="best"></p>
-    <button id="again">Rejouer</button>
+    <div class="result-actions">
+      <button id="again">↻ Rejouer</button>
+      <button id="homeResult" type="button">⌂ Accueil</button>
+    </div>
   </div>
 
   <div id="statistics">
@@ -328,7 +425,7 @@ body.theme-inferno{--bg:#180906;--card:#2a110c;--card2:#3a1810;--text:#fff4ed;--
 <script>
 /* Phase 2B : profil joueur + avatar */
 const PROFILE_KEY="typerush-profile";
-const avatarChoices=["😎","🤓","😄","😎","🤠","🥷","👻","🤖","🐱","🦊","🐼","🐸","🦁","🐯","🐲","👽","💀","🧙"];
+const avatarChoices=["🙂","🤓","😄","😎","🤠","🥷","👻","🤖","🐱","🦊","🐼","🐸","🦁","🐯","🐲","👽","💀","🧙"];
 const defaultProfile={name:"TypeRush",avatar:"😎"};
 let profile={...defaultProfile};
 function loadProfile(){
@@ -359,12 +456,11 @@ function renderProfile(){
   });
 }
 function openProfile(){
-  $("statistics").classList.remove("show");
-  $("customize").classList.remove("show");
+  hideWorkspaceSections();
   $("profileEditor").classList.add("show");
   $("playerName").focus();
 }
-function closeProfile(){$("profileEditor").classList.remove("show");}
+function closeProfile(){showHome();}
 $("showProfile").onclick=openProfile;
 $("closeProfile").onclick=closeProfile;
 $("playerName").addEventListener("input",e=>{
@@ -496,6 +592,7 @@ const texts={
 
 let difficulty="easy", target="", started=false, finished=false, startTime=0, timer=null;
 let duration=30;
+let combo=0,bestCombo=0,lastTypedValue="";
 let remainingTexts=[];
 let totalCorrect=0, totalTyped=0, totalErrors=0, completedPhrases=0;
 const HISTORY_KEY="typerush-history";
@@ -578,7 +675,7 @@ function recordGame(){
    difficulty, duration:Math.round(elapsedForRecord),
    wpm:rawWpm, accuracy:rawAccuracy, errors:finalErrorsForRecord,
    typedCharacters:finalTypedForRecord, correctCharacters:finalCorrectForRecord,
-   incorrectCharacters:finalErrorsForRecord, completedPhrases
+   incorrectCharacters:finalErrorsForRecord, completedPhrases, bestCombo
  });
  saveHistory(history);
 }
@@ -631,22 +728,54 @@ function renderStatistics(){
    list.appendChild(item);
  });
 }
-function showStatistics(){
- $("customize").classList.remove("show");
- $("profileEditor").classList.remove("show");
- $("game").style.display="none"; $("result").classList.remove("show"); $("statistics").classList.add("show"); renderStatistics();
-}
-function showGame(){
+function hideWorkspaceSections(){
+ $("homeScreen").classList.remove("show");
  $("statistics").classList.remove("show");
  $("customize").classList.remove("show");
  $("profileEditor").classList.remove("show");
+ $("result").classList.remove("show");
+ $("game").style.display="none";
+ $("workspace").style.display="block";
+}
+function renderHomeSummary(){
+ const history=loadHistory();
+ const games=history.length;
+ const correct=history.reduce((n,g)=>n+(Number(g.correctCharacters)||0),0);
+ const typed=history.reduce((n,g)=>n+(Number(g.typedCharacters)||0),0);
+ const bestWpm=games?Math.max(...history.map(g=>Number(g.wpm)||0)):0;
+ const bestCombo=games?Math.max(...history.map(g=>Number(g.bestCombo)||0)):0;
+ const avgAcc=typed?correct/typed*100:100;
+ $("homeBestWpm").textContent=Math.round(bestWpm);
+ $("homeBestCombo").textContent=bestCombo;
+ $("homeAvgAccuracy").textContent=Math.round(avgAcc)+"%";
+ $("homeGames").textContent=games;
+}
+function showHome(){
+ clearInterval(timer);
+ started=false;
+ finished=false;
+ input.disabled=true;
+ hideWorkspaceSections();
+ $("workspace").style.display="none";
+ $("homeScreen").classList.add("show");
+ renderHomeSummary();
+ window.scrollTo({top:0,behavior:settings.animations?"smooth":"auto"});
+}
+function showStatistics(){
+ hideWorkspaceSections();
+ $("statistics").classList.add("show");
+ renderStatistics();
+}
+function showGame(){
+ hideWorkspaceSections();
  if(finished){
    $("game").style.display="none";
    $("result").classList.add("show");
  }else{
    $("game").style.display="block";
    $("result").classList.remove("show");
-   input.focus();
+   $("input").disabled=false;
+   $("input").focus();
  }
 }
 
@@ -657,9 +786,45 @@ function reset(){
  refillPhrasePool();
  target=randomText(); input.value=""; input.disabled=false; input.focus();
  totalCorrect=0; totalTyped=0; totalErrors=0; completedPhrases=0;
+ combo=0;bestCombo=0;lastTypedValue="";updateComboUI();
  $("time").textContent=duration;$("wpm").textContent=0;$("accuracy").textContent="100%";$("errors").textContent=0;
- $("bar").style.width="0%";$("game").style.display="block";$("result").classList.remove("show");render();
+ $("bar").style.width="0%";$("homeScreen").classList.remove("show");$("workspace").style.display="block";$("game").style.display="block";$("statistics").classList.remove("show");$("customize").classList.remove("show");$("profileEditor").classList.remove("show");$("result").classList.remove("show");render();
 }
+function updateComboUI(message){
+ const badge=$("comboBadge"),count=$("comboCount"),msg=$("comboMessage");
+ if(!badge||!count||!msg)return;
+ count.textContent=combo;
+ badge.classList.toggle("show",combo>0);
+ badge.classList.toggle("hot",combo>=10);
+ badge.classList.toggle("fire",combo>=20);
+ if(message!==undefined)msg.textContent=message;
+ else if(combo===0)msg.textContent="Commence à taper pour lancer ta série !";
+ else if(combo<5)msg.textContent="Bonne série !";
+ else if(combo<10)msg.textContent="🔥 Ça chauffe !";
+ else if(combo<20)msg.textContent="⚡ Série impressionnante !";
+ else msg.textContent="💥 Série en feu !";
+}
+function registerComboCharacter(char,index){
+ const game=$("game");
+ if(char===target[index]){
+   combo++;
+   bestCombo=Math.max(bestCombo,combo);
+   updateComboUI();
+   game.classList.remove("combo-break");
+   game.classList.add(combo>=10?"combo-hot":"combo-hit");
+   setTimeout(()=>game.classList.remove("combo-hit","combo-hot"),130);
+   const badge=$("comboBadge");
+   if(badge){badge.classList.remove("combo-pop");void badge.offsetWidth;badge.classList.add("combo-pop");}
+   if(combo===5||combo===10||combo===20||combo===30||combo===50)playSound("combo");
+ }else{
+   if(combo>=5)updateComboUI("💔 Série interrompue !");
+   combo=0;updateComboUI("💔 Série interrompue !");
+   game.classList.remove("combo-hit","combo-hot");
+   game.classList.remove("combo-break");void game.offsetWidth;game.classList.add("combo-break");
+   setTimeout(()=>game.classList.remove("combo-break"),250);
+ }
+}
+
 function update(){
  const typed=input.value;
  let correct=0;
@@ -700,6 +865,7 @@ function nextPhrase(){
  if(finished)return;
  target=randomText();
  input.value="";
+ lastTypedValue="";
  render();
  input.focus();
 }
@@ -728,12 +894,17 @@ function finish(){
  const rawWpm=(finalCorrect/5)/(elapsed/60);
  const accuracy=Math.round(rawAccuracy);
  const wpm=Math.round(rawWpm);
+ // Score simple et lisible : vitesse pondérée par la précision.
+ const score=Math.max(0,Math.round(rawWpm*(rawAccuracy/100)));
  window.elapsedForRecord=elapsed; window.rawWpm=rawWpm; window.rawAccuracy=rawAccuracy;
  window.finalErrorsForRecord=finalErrors; window.finalTypedForRecord=finalTyped; window.finalCorrectForRecord=finalCorrect;
  recordGame();
+ $("finalScore").textContent=score;
+ $("finalScoreSmall").textContent=score;
  $("finalWpm").textContent=wpm;
  $("finalAccuracy").textContent=accuracy+"%";
- $("finalErrors").textContent=finalErrors;
+ $("finalComboValue").textContent=bestCombo;
+ $("finalErrors").textContent=finalErrors+" erreur"+(finalErrors>1?"s":"");
  $("finalTime").textContent=formatShortDuration(elapsed);
  const key="typerush-best-"+difficulty,best=Number(localStorage.getItem(key)||0);
  if(rawWpm>best){localStorage.setItem(key,rawWpm);$("best").textContent="🏆 Nouveau record !";}
@@ -744,8 +915,13 @@ function finish(){
 }
 $("newGame").onclick=()=>{showGame();reset();};
 $("again").onclick=()=>{showGame();reset();};
+$("homeResult").onclick=showHome;
+$("homePlay").onclick=()=>{ showGame(); reset(); };
+$("homeStats").onclick=showStatistics;
+$("homeCustomize").onclick=openCustomize;
+$("homeProfile").onclick=openProfile;
 $("showStats").onclick=showStatistics;
-$("backToGame").onclick=showGame;
+$("backToGame").onclick=showHome;
 $("clearHistory").onclick=()=>{
  if(confirm("⚠️ Effacer tout l’historique de TypeRush ?\n\nCette action est irréversible.")){
    localStorage.removeItem(HISTORY_KEY); renderStatistics();
@@ -754,9 +930,18 @@ $("clearHistory").onclick=()=>{
 input.addEventListener("input",()=>{
  if(!started) start();
  const typed=input.value;
- if(typed.length>0){
-   const index=typed.length-1;
-   playSound(typed[index]===target[index]?"correct":"wrong");
+ if(typed.length<lastTypedValue.length || !typed.startsWith(lastTypedValue)){
+   combo=0;updateComboUI("↩️ Série réinitialisée");
+   if(typed.length<lastTypedValue.length) playSound("wrong");
+   lastTypedValue=typed;
+ }else if(typed.length>lastTypedValue.length){
+   for(let i=lastTypedValue.length;i<typed.length;i++){
+     const index=i;
+     const correct=typed[i]===target[index];
+     playSound(correct?"correct":"wrong");
+     registerComboCharacter(typed[i],index);
+   }
+   lastTypedValue=typed;
  }
  update();
 });
@@ -794,15 +979,16 @@ function playSound(type){
   audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext)();
   if(audioContext.state==="suspended")audioContext.resume();
   const osc=audioContext.createOscillator(),gain=audioContext.createGain(),now=audioContext.currentTime;
-  const volume=(settings.volume/100)*0.045,freq=type==="correct"?620:type==="wrong"?170:type==="finish"?880:440;
+  const volume=(settings.volume/100)*0.045,freq=type==="correct"?620:type==="wrong"?170:type==="finish"?880:type==="combo"?980:440;
   osc.type=type==="wrong"?"sawtooth":"sine";osc.frequency.setValueAtTime(freq,now);
+  if(type==="combo")osc.frequency.exponentialRampToValueAtTime(1320,now+.14);
   if(type==="finish")osc.frequency.exponentialRampToValueAtTime(1180,now+.16);
-  gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.0001,now+(type==="finish"?.2:.055));
-  osc.connect(gain);gain.connect(audioContext.destination);osc.start(now);osc.stop(now+(type==="finish"?.21:.06));
+  gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.0001,now+(type==="finish"?.2:type==="combo"?.16:.055));
+  osc.connect(gain);gain.connect(audioContext.destination);osc.start(now);osc.stop(now+(type==="finish"?.21:type==="combo"?.17:.06));
  }catch(e){}
 }
-function openCustomize(){$("statistics").classList.remove("show");$("profileEditor").classList.remove("show");$("customize").classList.add("show");}
-function closeCustomize(){$("customize").classList.remove("show");}
+function openCustomize(){hideWorkspaceSections();$("customize").classList.add("show");}
+function closeCustomize(){showHome();}
 $("showCustomize").onclick=openCustomize;$("closeCustomize").onclick=closeCustomize;
 document.querySelectorAll(".theme-btn").forEach(btn=>btn.onclick=()=>{settings.theme=btn.dataset.theme;saveSettings();applySettings();playSound("click");});
 $("accentColor").addEventListener("input",e=>{settings.accent=e.target.value;saveSettings();applySettings();});
@@ -812,8 +998,11 @@ $("animationsToggle").addEventListener("change",e=>{settings.animations=e.target
 $("soundsToggle").addEventListener("change",e=>{settings.sounds=e.target.checked;saveSettings();if(settings.sounds)playSound("click");});
 $("volumeControl").addEventListener("input",e=>{settings.volume=Number(e.target.value);saveSettings();});
 loadSettings();applySettings();
+renderHomeSummary();
 
-reset();
+// Au chargement, TypeRush arrive toujours sur le véritable accueil.
+// Aucune partie n'est lancée et le chrono ne démarre pas.
+showHome();
 </script>
 </body>
 </html>

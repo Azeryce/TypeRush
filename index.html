@@ -387,6 +387,11 @@ function finish(){
  $("result").classList.add("show");
 }
 $("newGame").onclick=reset;$("again").onclick=reset;
+input.addEventListener("input",()=>{
+ if(!started) start();
+ update();
+});
+
 document.querySelectorAll(".diff").forEach(btn=>btn.onclick=()=>{
  document.querySelectorAll(".diff").forEach(b=>b.classList.remove("active"));
  btn.classList.add("active");difficulty=btn.dataset.diff;reset();

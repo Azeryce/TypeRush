@@ -123,16 +123,6 @@ body.theme-cyber{--bg:#06131c;--card:#0b202c;--card2:#103142;--text:#e6fbff;--mu
 body.theme-ocean{--bg:#06141c;--card:#0b2530;--card2:#123744;--text:#e8fbff;--muted:#8eb5bf;--accent:#38bdf8;--accent2:#2dd4bf;--danger:#fb7185}
 body.theme-forest{--bg:#07130d;--card:#102318;--card2:#173521;--text:#edfff2;--muted:#9ab5a1;--accent:#4ade80;--accent2:#a3e635;--danger:#fb7185}
 body.theme-inferno{--bg:#180906;--card:#2a110c;--card2:#3a1810;--text:#fff4ed;--muted:#c5a59a;--accent:#ff6b35;--accent2:#facc15;--danger:#ff4d67}
-body.theme-light{--bg:#eef2f7;--card:#ffffff;--card2:#e2e8f0;--text:#172033;--muted:#64748b;--accent:#635bff;--accent2:#059669;--danger:#e11d48}
-body.theme-light{background:radial-gradient(circle at 20% 10%,#dbeafe 0,transparent 35%),radial-gradient(circle at 90% 90%,#ccfbf1 0,transparent 35%),var(--bg)}
-body.theme-light .panel{background:rgba(255,255,255,.9);border-color:rgba(15,23,42,.08);box-shadow:0 20px 60px rgba(15,23,42,.12)}
-body.theme-light .textbox,body.theme-light #input,body.theme-light .mini-stat,body.theme-light .history-item,body.theme-light .chart{background:#f8fafc}
-body.theme-light .timer-control select,body.theme-light .timer-control input{background:#f1f5f9;color:var(--text)}
-body.theme-light .stat,body.theme-light .stat-card,body.theme-light .resultBox{background:rgba(15,23,42,.045)}
-body.theme-light .progress{background:#dbe2ea}
-body.theme-light #input{border-color:#cbd5e1}
-body.theme-light button:hover{background:#cbd5e1}
-body.theme-light #newGame{color:#064e3b}
 .customize{display:none;margin-bottom:20px;padding:20px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:18px}
 .customize.show{display:block}
 .customize-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
@@ -150,6 +140,18 @@ body.theme-light #newGame{color:#064e3b}
 .volume-row{display:flex;align-items:center;gap:10px}.volume-row input{flex:1;accent-color:var(--accent)}
 @media(max-width:650px){.settings-grid{grid-template-columns:1fr}.theme-buttons{grid-template-columns:repeat(2,1fr)}.textbox.text-large{font-size:25px}}
 
+
+/* Phase 2B : profil joueur + avatar */
+.profile-card{display:flex;align-items:center;gap:14px;margin:0 auto 20px;padding:14px 16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:18px;max-width:520px}
+.profile-avatar{width:58px;height:58px;display:grid;place-items:center;border-radius:16px;background:var(--card2);font-size:34px;flex:0 0 auto}
+.profile-info{min-width:0;flex:1}.profile-info strong{display:block;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-info span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.profile-edit{padding:9px 12px;font-size:12px}
+.profile-editor{display:none;margin-bottom:20px;padding:20px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:18px}
+.profile-editor.show{display:block}.profile-editor h2{margin:0}.profile-editor p{color:var(--muted);font-size:12px;margin:5px 0 16px}
+.profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.profile-field{background:rgba(255,255,255,.035);border-radius:14px;padding:14px}.profile-field label{display:block;font-weight:800;font-size:13px;margin-bottom:9px}.profile-field input[type=text]{width:100%;border:0;border-radius:9px;background:#0d1527;color:var(--text);padding:11px;outline:none;font-weight:700}.avatar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.avatar-btn{padding:9px 5px;font-size:25px;border:2px solid transparent}.avatar-btn.active{border-color:var(--accent);background:rgba(255,255,255,.08)}
+.profile-stat{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:14px;background:#0d1527;border-radius:15px}.profile-stat .profile-avatar{width:52px;height:52px}.profile-stat strong{display:block;font-size:17px}.profile-stat span{color:var(--muted);font-size:12px}
+@media(max-width:650px){.profile-fields{grid-template-columns:1fr}.avatar-grid{grid-template-columns:repeat(4,1fr)}}
+
 </style>
 </head>
 <body>
@@ -158,6 +160,11 @@ body.theme-light #newGame{color:#064e3b}
   <div class="logo">TYPERUSH</div>
   <h1>Teste ta vitesse</h1>
   <p class="subtitle">Tape le texte le plus vite et le plus précisément possible.</p>
+  <div class="profile-card">
+    <div id="homeAvatar" class="profile-avatar">😎</div>
+    <div class="profile-info"><strong id="homePlayerName">TypeRush</strong><span>👤 Profil joueur</span></div>
+    <button id="showProfile" class="profile-edit">✏️ Modifier</button>
+  </div>
 </header>
 
 <section class="panel">
@@ -183,6 +190,23 @@ body.theme-light #newGame{color:#064e3b}
   </div>
 
 
+  <div id="profileEditor" class="profile-editor">
+    <div class="customize-header">
+      <div><h2>👤 Mon profil</h2><p>Ton nom et ton avatar sont sauvegardés automatiquement dans ce navigateur.</p></div>
+      <button id="closeProfile">✕ Fermer</button>
+    </div>
+    <div class="profile-fields">
+      <div class="profile-field">
+        <label for="playerName">✏️ Nom du joueur</label>
+        <input id="playerName" type="text" maxlength="20" placeholder="Ton nom" autocomplete="off">
+      </div>
+      <div class="profile-field">
+        <label>🙂 Choisis ton avatar</label>
+        <div id="avatarGrid" class="avatar-grid"></div>
+      </div>
+    </div>
+  </div>
+
   <div id="customize" class="customize">
     <div class="customize-header">
       <div><h2>🎨 Personnaliser TypeRush</h2><p>Tes préférences sont enregistrées automatiquement dans ce navigateur.</p></div>
@@ -198,7 +222,6 @@ body.theme-light #newGame{color:#064e3b}
           <button class="theme-btn" data-theme="ocean">🌊 Océan</button>
           <button class="theme-btn" data-theme="forest">🌲 Forêt</button>
           <button class="theme-btn" data-theme="inferno">🔥 Inferno</button>
-          <button class="theme-btn" data-theme="light">☀️ Clair</button>
         </div>
       </div>
       <div class="setting">
@@ -262,6 +285,11 @@ body.theme-light #newGame{color:#064e3b}
       <button id="backToGame">← Retour au jeu</button>
     </div>
 
+    <div class="profile-stat">
+      <div id="statsAvatar" class="profile-avatar">😎</div>
+      <div><strong id="statsPlayerName">TypeRush</strong><span>👤 Profil joueur</span></div>
+    </div>
+
     <div class="stats-cards">
       <div class="stat-card"><div class="icon">🎮</div><div class="value" id="statGames">0</div><div class="label">Parties jouées</div></div>
       <div class="stat-card"><div class="icon">🏆</div><div class="value" id="statBestWpm">0</div><div class="label">Meilleur WPM</div></div>
@@ -298,6 +326,58 @@ body.theme-light #newGame{color:#064e3b}
 </main>
 
 <script>
+/* Phase 2B : profil joueur + avatar */
+const PROFILE_KEY="typerush-profile";
+const avatarChoices=["😎","🤓","😄","😎","🤠","🥷","👻","🤖","🐱","🦊","🐼","🐸","🦁","🐯","🐲","👽","💀","🧙"];
+const defaultProfile={name:"TypeRush",avatar:"😎"};
+let profile={...defaultProfile};
+function loadProfile(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(PROFILE_KEY)||"null");
+    if(saved&&typeof saved==="object") profile={...defaultProfile,...saved};
+  }catch(e){profile={...defaultProfile};}
+  if(typeof profile.name!=="string"||!profile.name.trim()) profile.name=defaultProfile.name;
+  if(!avatarChoices.includes(profile.avatar)) profile.avatar=defaultProfile.avatar;
+}
+function saveProfile(){localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));}
+const $=id=>document.getElementById(id);
+
+function renderProfile(){
+  $("homeAvatar").textContent=profile.avatar;
+  $("homePlayerName").textContent=profile.name;
+  $("statsAvatar").textContent=profile.avatar;
+  $("statsPlayerName").textContent=profile.name;
+  $("playerName").value=profile.name;
+  const grid=$("avatarGrid");
+  grid.innerHTML="";
+  avatarChoices.forEach((avatar,i)=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="avatar-btn";b.textContent=avatar;b.title="Avatar "+(i+1);
+    b.classList.toggle("active",avatar===profile.avatar);
+    b.onclick=()=>{profile.avatar=avatar;saveProfile();renderProfile();playSound("click");};
+    grid.appendChild(b);
+  });
+}
+function openProfile(){
+  $("statistics").classList.remove("show");
+  $("customize").classList.remove("show");
+  $("profileEditor").classList.add("show");
+  $("playerName").focus();
+}
+function closeProfile(){$("profileEditor").classList.remove("show");}
+$("showProfile").onclick=openProfile;
+$("closeProfile").onclick=closeProfile;
+$("playerName").addEventListener("input",e=>{
+  const value=e.target.value.replace(/\s+/g," ").slice(0,20);
+  profile.name=value.trim()||defaultProfile.name;
+  saveProfile();
+  $("homePlayerName").textContent=profile.name;
+  $("statsPlayerName").textContent=profile.name;
+});
+loadProfile();
+renderProfile();
+
+
 const texts={
  easy:[
   "Le petit renard traverse la forêt pendant que le soleil se lève.",
@@ -420,7 +500,6 @@ let remainingTexts=[];
 let totalCorrect=0, totalTyped=0, totalErrors=0, completedPhrases=0;
 const HISTORY_KEY="typerush-history";
 const MAX_HISTORY=500;
-const $=id=>document.getElementById(id);
 const input=$("input");
 
 function refillPhrasePool(){
@@ -554,11 +633,13 @@ function renderStatistics(){
 }
 function showStatistics(){
  $("customize").classList.remove("show");
+ $("profileEditor").classList.remove("show");
  $("game").style.display="none"; $("result").classList.remove("show"); $("statistics").classList.add("show"); renderStatistics();
 }
 function showGame(){
  $("statistics").classList.remove("show");
  $("customize").classList.remove("show");
+ $("profileEditor").classList.remove("show");
  if(finished){
    $("game").style.display="none";
    $("result").classList.add("show");
@@ -696,7 +777,7 @@ function loadSettings(){
 }
 function saveSettings(){localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}
 function applySettings(){
- document.body.classList.remove("theme-obsidian","theme-violet","theme-cyber","theme-ocean","theme-forest","theme-inferno","theme-light");
+ document.body.classList.remove("theme-obsidian","theme-violet","theme-cyber","theme-ocean","theme-forest","theme-inferno");
  document.body.classList.add("theme-"+settings.theme);
  document.body.style.setProperty("--accent",settings.accent);
  document.body.classList.remove("font-modern","font-mono","font-cyber","font-classic");
@@ -720,7 +801,7 @@ function playSound(type){
   osc.connect(gain);gain.connect(audioContext.destination);osc.start(now);osc.stop(now+(type==="finish"?.21:.06));
  }catch(e){}
 }
-function openCustomize(){$("statistics").classList.remove("show");$("customize").classList.add("show");}
+function openCustomize(){$("statistics").classList.remove("show");$("profileEditor").classList.remove("show");$("customize").classList.add("show");}
 function closeCustomize(){$("customize").classList.remove("show");}
 $("showCustomize").onclick=openCustomize;$("closeCustomize").onclick=closeCustomize;
 document.querySelectorAll(".theme-btn").forEach(btn=>btn.onclick=()=>{settings.theme=btn.dataset.theme;saveSettings();applySettings();playSound("click");});
